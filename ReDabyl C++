@@ -1,0 +1,124 @@
+#ifdef ESP32
+  
+#include <WiFi.h>
+#else
+#include <ESP8266WiFi.h>
+#endif
+#include <WiFiClientSecure.h>
+#include <UniversalTelegramBot.h> // Скачать библиотеку можно от сюда: https://github.com/witnessmenow/Universal-Arduino-Telegram-Bot
+#include <ArduinoJson.h>
+#include <Adafruit_Sensor.h>
+#include <SPI.h>
+#include <nRF24L01.h>
+#include <RF24.h>
+RF24 radio(4, 5);//CE, CSN
+short int data1[8];
+short int dat2[8];
+int Long=0, Lat=0,Temp=0,Press=0,Alt=0,Fla=0,Gas=0,Hum=0;
+int Long1=0, Lat1=0,Temp1=0,Press1=0,Alt1=0,Fla1=0,Gas1=0,Hum1=0;
+uint8_t  pipe; 
+// Настройки wi-fi сети
+const char* ssid = "Innofest2023"; //логин и пароль от вайфая кандай?
+const char* password = "123456789";
+WiFiServer server(80);
+// Находим @myidbot и узнаем у него наш id командой /getid
+//#define CHAT_ID "5051100865"
+
+// Телеграмм бот
+#define BOTtoken "7044447929:AAEGs4NW46MpPhXt9vocJT3wy5fqCEmLqsw"  // Токен узнается у @Botfather после создания бота
+
+WiFiClientSecure client;
+UniversalTelegramBot bot(BOTtoken, client);
+
+//Проверять сообщения 1000=1секунде
+int botRequestDelay = 1000;
+unsigned long lastTimeBotRan;
+
+// BME280 connect to ESP32 I2C (GPIO 21 = SDA, GPIO 22 = SCL)
+// BME280 connect to ESP8266 I2C (GPIO 4 = SDA, GPIO 5 = SCL)        
+
+// Отправка значений с датчика BME280
+String getReadings(){
+   String message ="Данные с прибора E-Dabyl-1 \n";
+   message += "Долгота: " + String(Long)+"\n";
+  message += "Широта: " + String(Lat)+"\n";
+  message += "Температура: " + String(Temp)+"*C\n";
+  message += "Давление: " + String(Press)+"mPh\n";
+  message += "Высота: " + String(Alt)+ "meters\n";
+  message += "Присутствие пламени: " + String(Fla)+"\n";
+  message += "Концентрация дыма: " + String(Gas)+"mm\n";
+  message += "Влажность: " + String(Hum)+"%\n";
+  message += "Уровень воды: " + String(5)+"м\n";
+  message +="------------------------------------------";
+  message +="Данные с прибора E-Dabyl-2 \n";
+  message += "Долгота: " + String(Long1)+"\n";
+  message += "Широта: " + String(Lat1)+"\n";
+  message += "Температура: " + String(Temp1)+"*C\n";
+  message += "Давление: " + String(Press1)+"mPh\n";
+  message += "Высота: " + String(Alt1)+ "meters\n";
+  message += "Присутствие пламени: " + String(Fla1)+"\n";
+  message += "Концентрация дыма: " + String(Gas1)+"mm\n";
+  message += "Влажность: " + String(Hum1)+"%\n";
+  message += "Уровень воды: " + String(5)+"м\n";
+  return message;
+}
+
+
+void handleNewMessages(int numNewMessages) {
+  Serial.println("handleNewMessages");
+  Serial.println(String(numNewMessages));
+
+  for (int i=0; i<numNewMessages; i++) {
+    // Chat id of the requester
+    String chat_id = String(bot.messages[i].chat_id);
+   /* if (chat_id != CHAT_ID){
+      bot.sendMessage(chat_id, "Unauthorized user", "");
+      continue;
+    }*/
+    
+ 
+    String text = bot.messages[i].text;
+    Serial.println(text);
+
+    String from_name = bot.messages[i].from_name;
+
+    if (text == "/start1") {
+      String welcome = "Welcome, " + from_name + ".\n";
+      welcome += "Use the following command to get current readings.\n\n";
+      welcome += "/readings \n";
+      bot.sendMessage(chat_id, welcome, "");
+    }
+//здесь задается команда которую будет слушать контроллер и при прочтении ее отправит значения температуры и влажности
+    if (text == "/start") {
+      String readings = getReadings();
+      bot.sendMessage(chat_id, readings, "");
+    }  
+  }
+}
+
+void setup() {
+  Serial.begin(115200);
+ // Wire.begin();
+  
+
+  #ifdef ESP8266
+    client.setInsecure();
+  #endif
+ 
+  // Подключение к wi-fi
+  WiFi.mode(WIFI_STA);
+  WiFi.begin(ssid, password);
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(1000);
+    Serial.println("Connecting to WiFi..");
+  }
+  // Отправка ip адреса в компорт
+  Serial.println(WiFi.localIP());
+  radio.begin();
+  radio.setChannel(0); 
+  radio.setDataRate (RF24_1MBPS);
+  radio.setPALevel (RF24_PA_HIGH);
+  radio.openReadingPipe(0,0x1234567890LL);
+  radio.openReadingPipe(1,0x0987654321AA);  
+  radio.startListening();
+  server.b
