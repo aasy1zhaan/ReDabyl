@@ -1,0 +1,36 @@
+<!DOCTYPE HTML>");
+<html>
+<head>
+<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">"
+<title>Данные с приборов</title>
+<style> body { background-color: #f5ffff;}.table_blur {background: #f5ffff;border-collapse: collapse;text-align: left;margin: auto;}
+.table_blur th {border-top: 1px solid #777777; border-bottom: 1px solid #777777; box-shadow: inset 0 1px 0 #999999, inset 0 -1px 0 #999999; background: linear-gradient(#9595b6, #5a567f); color: white; padding: 10px 15px;position: relative;}
+.table_blur th:after {content: "";display: block;position: absolute;left: 0;top: 25%;height: 25%;width: 100%;background: linear-gradient(rgba(255, 255, 255, 0), rgba(255,255,255,.08));}
+.table_blur tr:nth-child(odd) {background: #ebf3f9;}
+.table_blur th:first-child {border-left: 1px solid #777777; border-bottom:  1px solid #777777;box-shadow: inset 1px 1px 0 #999999, inset 0 -1px 0 #999999;}
+.table_blur th:last-child {border-right: 1px solid #777777;border-bottom:  1px solid #777777;box-shadow: inset -1px 1px 0 #999999, inset 0 -1px 0 #999999;}
+.table_blur td {border: 1px solid #e3eef7;padding: 10px 15px;position: relative;transition: all 0.5s ease;}
+.table_blur tbody:hover td {color: transparent;text-shadow: 0 0 3px #a09f9d;}
+.table_blur tbody:hover tr:hover td {color: #444444;text-shadow: none;}
+.center {text-align: center;}
+</style>
+</head>
+<body >
+<p class=\"center\" style=\"font:italic 50px bold \"Times New Roman\", Times, serif\">Система мониторинга окружающей среды Республики Казахстан</p>
+<table class=\"table_blur\">
+<tr><th>Название прибора</th><th>Долгота</th><th>Широта</th><th>Температура</th><th>Давление</th><th>Высота</th><th>Присутствие пламени</th><th>Концентрация дыма</th><th>Влажность</th><th>Уровень воды</th></tr>
+<tr><td>E-Dabyl-1</td><td>" + String(Long)+"</td><td>" + String(Lat)+"</td><td>" + String(Temp)+"*C</td><td>" + String(Press)+"mPh</td><td>" + String(Alt)+ "meters</td><td>" + String(Fla)+"</td><td>" + String(Gas)+"mm</td><td>" + String(Hum)+"%</td></tr>"+ String(5)+"%</td></tr>
+<tr><td>E-Dabyl-1</td><td>" + String(Long1)+"</td><td>" + String(Lat1)+"</td><td>" + String(Temp1)+"*C</td><td>" + String(Press1)+"mPh</td><td>" + String(Alt1)+ "meters</td><td>" + String(Fla1)+"</td><td>" + String(Gas1)+"mm</td><td>" + String(Hum1)+"%</td></tr>"+ String(7)+"%</td></tr>
+</table>
+<p class=\"left\" style=\"font:italic 24px bold \"Times New Roman\", Times, serif\"> В этот день,13 апреля, по данным нашего архива.</p>
+<p class=\"left\" style=\"font:italic 24px bold \"Times New Roman\", Times, serif\"> Абсолютный минимум 254.</p>
+<p class=\"left\" style=\"font:italic 24px bold \"Times New Roman\", Times, serif\"> Абсолютный максимум 750.</p>
+<p class=\"left\" style=\"font:italic 24px bold \"Times New Roman\", Times, serif\"> 790 уровень критический.</p> 
+<p class=\"left\" style=\"font:italic 24px bold \"Times New Roman\", Times, serif\"> Коксарайское водохранилище.</p>
+<p class=\"left\" style=\"font:italic 24px bold \"Times New Roman\", Times, serif\"> 1,8млрд куб м состовляет на данный моменты воды.</p>
+<p class=\"left\" style=\"font:italic 24px bold \"Times New Roman\", Times, serif\"> 3 млрд куб м проектный обьем.</p>
+<table class=\"table_blur\">
+</table>
+<a href=\"#\" onclick=\"location.reload(); return false;\">Обновить страницу</a>
+</body>
+</html>
